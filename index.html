@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Valentine</title>
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; font-family: 'Arial', sans-serif; }
+        
+        /* Step 1: Login Style */
+        #login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #fff0f3; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 100;
+        }
+        input { padding: 10px; margin: 10px; border-radius: 5px; border: 1px solid #ff4d6d; width: 250px; }
+        button { padding: 10px 20px; background: #ff4d6d; color: white; border: none; border-radius: 5px; cursor: pointer; }
+
+        /* Step 2: White Screen */
+        #white-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; display: none; z-index: 50; cursor: pointer;
+        }
+
+        /* Rose Styles */
+        .rose {
+            position: absolute; font-size: 50px; transition: all 0.5s ease;
+            user-select: none; z-index: 60;
+        }
+
+        #valentine-text {
+            position: absolute; top: 10%; width: 100%; text-align: center;
+            color: #ff4d6d; font-size: 2.5rem; display: none; z-index: 70;
+        }
+
+        /* Step 3: Final Blast */
+        #final-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: white; display: none; justify-content: center;
+            align-items: center; flex-direction: column; z-index: 200;
+        }
+        #final-screen img { width: 300px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        #final-screen h1 { color: #c9184a; font-size: 2rem; margin-top: 20px; }
+        
+        .blast-effect { animation: blast 0.5s forwards; }
+        @keyframes blast {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(5); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <h2>Identity Verification</h2>
+        <input type="text" id="regNo" placeholder="Enter Register Number">
+        <input type="text" id="dob" placeholder="Enter DOB (DD/MM/YYYY)">
+        <button onclick="checkLogin()">Access Secret File</button>
+    </div>
+
+    <div id="white-screen" onclick="addRose()">
+        <div id="valentine-text">Happy Valentine's Day! ❤️</div>
+    </div>
+
+    <div id="final-screen">
+        <img src="YOUR_IMAGE_URL_HERE" alt="Our Picture">
+        <h1>I love you so muchhhhhh! ❤️</h1>
+    </div>
+
+    <script>
+        let roseCount = 0;
+        const maxRoses = 20;
+
+        function checkLogin() {
+            const reg = document.getElementById('regNo').value;
+            const dob = document.getElementById('dob').value;
+            
+            // You can set specific values here or leave it open
+            if(reg !== "" && dob !== "") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('white-screen').style.display = 'block';
+            } else {
+                alert("Please enter the details!");
+            }
+        }
+
+        function addRose() {
+            if (roseCount < maxRoses) {
+                const rose = document.createElement('div');
+                rose.className = 'rose';
+                rose.innerHTML = '🌹';
+                
+                // Random position near the center to form a bouquet
+                const x = window.innerWidth / 2 + (Math.random() * 200 - 100);
+                const y = window.innerHeight / 2 + (Math.random() * 200 - 100);
+                
+                rose.style.left = x + 'px';
+                rose.style.top = y + 'px';
+                
+                document.getElementById('white-screen').appendChild(rose);
+                roseCount++;
+
+                if (roseCount === maxRoses) {
+                    document.getElementById('valentine-text').style.display = 'block';
+                    // Change click behavior to blast
+                    document.getElementById('white-screen').onclick = blastBouquet;
+                }
+            }
+        }
+
+        function blastBouquet() {
+            const roses = document.querySelectorAll('.rose');
+            roses.forEach(r => r.classList.add('blast-effect'));
+            document.getElementById('valentine-text').classList.add('blast-effect');
+
+            setTimeout(() => {
+                document.getElementById('white-screen').style.display = 'none';
+                document.getElementById('final-screen').style.display = 'flex';
+            }, 500);
+        }
+    </script>
+</body>
+</html>
